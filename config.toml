@@ -1,3 +1,18 @@
-baseURL = "http://example.org/"
-languageCode = "en-us"
-title = "My New Hugo Site"
+baseurl = "/"
+title = "Hopper"
+theme = "ghostwriter"
+
+[Params]
+    mainSections = ["post"]
+    intro = true
+    headline = "Hopper"
+    description = "Discardable containers on the web!"
+    github = "https://github.com/mag1c-48"
+    twitter = "https://twitter.com/MaciejZaSw"
+    email = "maciej.swierad2@mail.dcu.ie"
+    opengraph = true
+    shareTwitter = true
+    dateFormat = "Mon, Jan 2, 2006"
+
+[Permalinks]
+    post = "/:filename/"
