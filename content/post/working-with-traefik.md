@@ -1,0 +1,15 @@
+---
+title: "Working With Traefik"
+date: 2021-02-12T22:31:43Z
+draft: false
+---
+
+# Traefik!
+Traefik is a reverse-proxy application that runs inside a docker-container, we chose this revers-proxy over the likes of nginx due to its seamless integration with the docker engine. However, learning how to use the reverse-proxy was not always smooth sailing.
+
+## Trials and tribulations
+To get things started, we wanted to get a basic traefik application up and running. For this we followed the quick start guide given in the traefik documentation.
+We read through it, understood what the code did, so then we proceeded to try the code out for myself to see how it worked and how the traefik dashboard looked and operated. We quickly ran into the problem of no matter what we did, the sample "whoami" program would not show up and even the traefik dashboard would not work! Now, traefik runs on the port 8080, we thought that we had exposed this port in my Azure vm already, but as it just so happens, that was not the case. We had profile named "Port_8080" in the ports section, however this did not have any port under it which is why we were mislead. Once we realised this we exposed the correct port the program and the dashboard just worked! We were now ready to try and use traefik ourselves for what we needed it for.
+
+## Setting up our traefik  
+Next came reading Traefik documentation to figure out how we needed it to work, we found that for what we needed it, traefik was rather simple to set up, all we had to do was expose the correct ports and link it to the docker engine make sure that they can communicate together. Seemed simpe, we wrote our traefik config in the docker-compose.yml file. And we moved on to trying to figure out what labels our docker container would need, however once we had those labels in place, it still would not work, in fact, our container would not even show up in the traefik dashboard on port 8080. After much googling and looking through different issues on traefik Github we found that sometimes docker does not put the containers on the same network which causes issues. So before we did anything else we had to force both the linux container and traefik container to be on the same network. This fixed the traefik not detecing our linux container issue.  Another issue arose when we settled on using Host=Path and setting our path to be absolute. We thought this would work, we were wrong. We could not get our WeTTY container to show, it only showed partially and very broken, with a console log error of not being able to find its assets. This took us a while to figure out that what we needed was Host=PathPrefix since this sets the path as relative, that way WeTTY can send data over on paths after the given path and traefik will allow it through. Now we had our basic container in a browser!
